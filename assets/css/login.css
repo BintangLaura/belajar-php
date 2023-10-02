@@ -1,0 +1,255 @@
+* {
+    margin: 0px;
+    padding: 0px;    
+}
+
+.container{
+    margin: 50px auto;
+    width: 800px;
+    border: 1px solid snow;
+    box-shadow: 0px 0px 100px 8px aquamarine;
+    border-radius: 5px;
+}
+
+.container .judul{
+    width: 800px;
+}
+
+.kotak-login{
+    width: 800px;
+    height: 330px;
+    display: flex;
+}
+
+.judul img{
+   width: 150px;
+   height: 150px;
+   margin: 10px;
+}
+
+.judul h1{
+    text-align: center;
+}
+
+.kolom-uspas{
+    width: 400px;
+    height: 280px;
+    margin: 20px 10px;
+    padding: 5px;
+    border-right: 1px solid aquamarine;
+}
+
+.kolom-video video{
+    width: 350px;
+    margin: 40px 10px;
+}
+
+.ingat{
+    border-top: 1px solid gainsboro;
+    border-bottom: 1px solid gainsboro;
+    width: 380px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+}
+
+.ingat a{
+    padding-left: 150px;
+}
+
+.form_login_user {
+    box-sizing: border-box;
+    width: 380px;
+	padding: 10px;
+	font-size: 11pt;
+	margin-bottom: 20px;
+    border: 2px solid aquamarine;
+}
+
+.form_login_pass {
+    box-sizing: border-box;
+    width: 380px;
+	padding: 10px;
+	font-size: 11pt;
+	margin-bottom: 20px;
+    border: 2px solid aquamarine;
+    display: inline-flex;
+}
+
+.form_tombol1{
+    margin: 15px 0px;
+    border: 1px solid aquamarine;
+    border-radius: 5px;
+    background: aquamarine;
+    width: 380px;
+    height: 30px;
+}
+
+
+@media screen and (max-width: 990px){
+    .container{
+        width: 780px;
+        height: 1500px;
+    }
+    .judul img{
+        width: 300px;
+        height: 300px;
+        margin: 10px;
+    }
+
+    .judul h1{
+        font-size: 35pt;
+    }
+
+    .kotak-login{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .kolom-uspas{
+        border: transparent;
+        font-size: 25pt;
+        width: 700px;
+    }
+
+    .form_login_user {
+        box-sizing: border-box;
+        width: 680px;
+        font-size: 20pt;
+    }
+    
+    .form_login_pass {
+        box-sizing: border-box;
+        width: 680px;
+        font-size: 20pt;
+    }
+
+    .ingat{
+        width: 700px;
+    }
+    
+    .ingat a{
+        padding-left: 200px;
+    }
+    
+    .form_tombol1{
+        width: 700px;
+        height: 40px;
+        font-size: 23pt;
+    }
+    
+    .kolom-video video{
+        width: 730px;
+        height: 450px;
+        margin: 250px 23px;
+    }
+}
+
+@media screen and (max-width: 768px){
+    .container{
+        width: 600px;
+        height: 1000px;
+    }
+    
+    .container .judul{
+        width: 600px;
+    }
+    
+    .judul img{
+        width: 200px;
+        height: 200px;
+        margin: 10px;
+    }
+
+    .kotak-login{
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .kolom-uspas{
+        border: transparent;
+        font-size: 20pt;
+    }
+    
+    .form_login_user {
+        box-sizing: border-box;
+        width: 550px;
+        font-size: 15pt;
+    }
+    
+    .form_login_pass {
+        box-sizing: border-box;
+        width: 550px;
+        font-size: 15pt;
+    }
+    
+    .ingat{
+        width: 550px;
+    }
+    
+    .ingat a{
+        padding-left: 170px;
+    }
+    
+    .form_tombol1{
+        width: 550px;
+        height: 30px;
+        font-size: 17pt;
+    }
+    
+    .kolom-video video{
+        width: 550px;
+        height: 300px;
+        margin: 90px 23px;
+    }
+    
+}
+
+@media screen and (max-width: 428px){
+    .container{
+        width: 350px;
+        height: 1000px;
+    }
+
+    .container .judul{
+        width: 350px;
+    }
+
+    .kotak-login{
+        width: 300px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form_login_user {
+        box-sizing: border-box;
+        width: 300px;
+    }
+
+    .form_login_pass {
+        box-sizing: border-box;
+        width: 300px;
+    }
+    
+    .ingat{
+        width: 300px;
+        font-size: 15pt;
+    }
+
+    .ingat a{
+        padding-left: 20px;
+        
+    }
+
+    .form_tombol1{
+        margin-top: 10px;
+        margin-left: 10px;
+        width: 300px;
+        height: 30px;
+    }
+
+    .kolom-video video{
+        width: 300px;
+        margin: 50px 23px;
+    }
+}
