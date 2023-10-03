@@ -144,7 +144,7 @@
                 <a href="../pages/product-loop.php" class="nav-link">
                   <i class="nav-icon fas fa-shopping-cart"></i>
                   <p>
-                    Daftar Produk Dengan Looping
+                    Daftar Produk Looping
                    <!--<span class="right badge badge-danger">New</span>-->
                   </p>
                 </a>
