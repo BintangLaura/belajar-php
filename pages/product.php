@@ -149,6 +149,15 @@
                   </p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="../pages/logout.php" class="nav-link">
+                  <i class="nav-icon fas fa-power-off"></i>
+                  <p>
+                    Logout
+                   <!--<span class="right badge badge-danger">New</span>-->
+                  </p>
+                </a>
+              </li>
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
         </ul>
