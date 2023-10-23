@@ -1,19 +1,21 @@
-<?php
+<?php 
 include '../crud/koneksi.php';
+$query = mysqli_query($koneksi, "SELECT * FROM customers");
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dashboard Dengan Bootstrap dan PHP</title>
+  <title>Data Customer</title>
 
   <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">-->
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../assets-bootstrap/plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">-->
   <!-- Tempusdominus Bootstrap 4 -->
   <link rel="stylesheet" href="../assets-bootstrap/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   <!-- iCheck -->
@@ -33,9 +35,9 @@ include '../crud/koneksi.php';
 <div class="wrapper">
 
   <!-- Preloader -->
-  <div class="preloader flex-column justify-content-center align-items-center">
+  <!-- <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="../assets-bootstrap/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-  </div>
+  </div> -->
 
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -54,9 +56,11 @@ include '../crud/koneksi.php';
           <i class="fas fa-search"></i>
         </a>
         <div class="navbar-search-block">
-          <form class="form-inline">
+          <form class="form-inline"  method="get" action="">
             <div class="input-group input-group-sm">
-              <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+              <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search" name="cari" value="<?php if (isset($_GET['cari'])) {
+                echo $_GET['cari'];
+              } ?>">
               <div class="input-group-append">
                 <button class="btn btn-navbar" type="submit">
                   <i class="fas fa-search"></i>
@@ -109,14 +113,14 @@ include '../crud/koneksi.php';
       <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item">
-                <a href="../pages/dashboard.php" class="nav-link active">
+                <a href="../pages/dashboard.php" class="nav-link">
                   <i class="nav-icon fas fa-tachometer-alt"></i>
                   <p>
                     Dashboard
                   </p>
                 </a>
-            </li>
-            <li class="nav-item">
+              </li>
+              <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-shopping-cart"></i>
               <p>
@@ -145,15 +149,14 @@ include '../crud/koneksi.php';
               <a href="../pages/crud-product.php" class="nav-link">
                   <!-- <i class="nav-icon fas fa-shopping-cart"></i> -->
                   <p>
-                    CRUD Produk
-                   
+                    CRUD Produk                  
                   </p>
                 </a>
               </li>
             </ul>
           </li>
-            <li class="nav-item">
-                <a href="../user/view-user.php" class="nav-link">
+              <li class="nav-item">
+                <a href="../user/view-user.php" class="nav-link active">
                   <i class="nav-icon fas fa-users"></i>
                   <p>
                     Customer
@@ -170,7 +173,7 @@ include '../crud/koneksi.php';
                   </p>
                 </a>
               </li>
-            <li class="nav-item">
+              <li class="nav-item">
                 <a href="../pages/logout.php" class="nav-link">
                   <i class="nav-icon fas fa-power-off"></i>
                   <p>
@@ -195,116 +198,110 @@ include '../crud/koneksi.php';
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard</h1>
+            <h1 class="m-0">Daftar Nama Customer</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard</li>
+              <li class="breadcrumb-item">Dashboard</li>
+              <li class="breadcrumb-item active">Data Customer</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-    <?php 
-    $queryProduk = mysqli_query($koneksi, "SELECT * FROM products");
-    $jmlProduk   = mysqli_num_rows($queryProduk);
-
-    
-    $queryCust = mysqli_query($koneksi, "SELECT * FROM customers");
-    $jmlCust   = mysqli_num_rows($queryCust);
-
-
-    $queryVendor = mysqli_query($koneksi, "SELECT * FROM vendors");
-    $jmlVendor   = mysqli_num_rows($queryVendor);
-    ?>
     <!-- Main content -->
     <section class="content">
+          <?php
+            if (isset($_GET['cari'])) {
+              $cari = $_GET['cari'];
+              echo "<h2>Hasil Pencarian dari : ".$cari."</h2>";
+            }
+          ?>
+          <br>
+          <br>
+      <a href="../user/view-tambah-user.php" class="btn btn-info btn-sm-3 mb-3">
+        <i class="nav-icon fas fa-plus"></i> Tambah Data Customer
+      </a>
       <div class="container-fluid">
-      <div class="row">
-          <div class="col-lg-4 col-6">
-            <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3><?= $jmlProduk ?></h3>
+      <div class="card">
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr class="text-center">
+                      <th style="width: 10px">No</th>
+                      <th>Kode Customer</th>
+                      <th>Nama Customer</th>
+                      <th>Nomor Telepon</th>
+                      <th>Email</th>
+                      <th>Alamat</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+                  <?php
 
-                <p>Produk</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-bag"></i>
-              </div>
-              <a href="../pages/crud-product.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <!-- ./col -->
-          <div class="col-lg-4 col-6">
-            <!-- small box -->
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3><?= $jmlCust ?></h3>
+                  //konfigurasi pagination
+                  $dataperhalaman = 3;
+                  $halaman = isset($_GET['p'])?(int)$_GET['p'] : 1;
+                  $halaman_awal = ($halaman > 1) ? ($halaman * $dataperhalaman) - $dataperhalaman : 0;
 
-                <p>Pelanggan</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-person-add"></i>
-              </div>
-              <a href="../user/view-user.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-4 col-6">
-            <!-- small box -->
-            <div class="small-box bg-danger">
-              <div class="inner">
-                <h3><?= $jmlVendor ?></h3>
+                  $next = $halaman + 1;
+                  $previous = $halaman - 1;
 
-                <p>Vendor</p>
+                  $cust = mysqli_query($koneksi, "SELECT * FROM customers");
+                  $jumlah_data = mysqli_num_rows($cust);
+                  $total_halaman = ceil($jumlah_data / $dataperhalaman);                 
+
+
+                    if (isset($_GET['cari'])) {
+                      $query = mysqli_query($koneksi, "SELECT * FROM customers WHERE name LIKE '%".$cari."%'");
+                    } else {
+                      $query = mysqli_query($koneksi, "SELECT * FROM customers 
+                      LIMIT $halaman_awal, $dataperhalaman");
+                    }
+                    $nomor = 0;
+                    while ($data = mysqli_fetch_array($query)) {
+                      $nomor++;
+                  ?>
+                  <tbody>
+                    <tr>
+                      <td><?php echo $nomor ?></td>
+                      <td><?php echo $data['code']; ?></td>
+                      <td><?php echo $data['name']; ?></td>
+                      <td><?php echo $data['phone_number']; ?></td>
+                      <td><?php echo $data['email']; ?></td>
+                      <td><?php echo $data['address']; ?></td>
+                      <td class="text-center">
+                          <a href="../user/view-edit-user.php?code=<?php echo $data['code']; ?>" class="btn btn-outline-warning btn-sm ms-3"><i class="nav-icon fas fa-edit"></i></a>
+                          <a href="../user/hapus.php?code=<?php echo $data['code']; ?>" class="btn btn-outline-danger btn-sm ms-3"><i class="nav-icon fas fa-trash"></i></a>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <?php } ?>
+                </table>
               </div>
-              <div class="icon">
-                <i class="ion ion-pie-graph"></i>
+              <!-- /.card-body -->
+              <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                  <li class="page-item"><a class="page-link" <?php if ($halaman > 1) {
+                    echo "href=?page=crud-product&p=$previous";
+                  } ?>>Previous</a></li>
+
+                  <?php for ($i=1; $i <= $total_halaman ; $i++) { ?>
+                    <li class="page-item">
+                    <a class="page-link" href="?page=crud-product&p=<?= $i ?>"><?= $i ?></a></li>
+                  <?php } ?>
+                  <!-- <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li> -->
+                  <li class="page-item"><a class="page-link" <?php if ($halaman < $total_halaman) {
+                    echo "href=?page=crud-product&p=$next";
+                  } ?>>Next</a></li>
+                </ul>
               </div>
-              <a href="../vendor/view-vendor.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-          </div>
-          <!-- ./col -->
-        </div>
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-              <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-              <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-              <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-              <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-              <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
-            </ol>
-            <div class="carousel-inner mb-3">
-              <div class="carousel-item active">
-                <img class="d-block w-100" src="../assets/images/african-american-man-looks-clothes-online-touch-screen-monitor-fashion-boutique-mall-self-service-bo.webp" alt="First slide">
-              </div>
-              <div class="carousel-item">
-                <img class="d-block w-100" src="../assets/images/female-friends-out-shopping-together.jpg" alt="Second slide">
-              </div>
-              <div class="carousel-item">
-                <img class="d-block w-100" src="../assets/images/beautiful-woman-standing-boutique-holding-shopping-bags-credit-card-hand.webp" alt="Third slide">
-              </div>
-              <div class="carousel-item">
-                <img class="d-block w-100" src="../assets/images/showroom-employee-helping-senior-woman-choosing-bag-shopping-casual-wear-modern-boutique-elderly-customer-buying-fashionable-merchandise-trendy-accessories-fashion-concept.jpg" alt="Fouth slide">
-              </div>
-              <div class="carousel-item">
-                <img class="d-block w-100" src="../assets/images/young-women-posing-near-old-decorated-car.webp" alt="Fifth slide">
-              </div>
-            </div>
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="sr-only">Next</span>
-            </a>
-          </div>
-      </div><!-- /.container-fluid -->
+      </div>
     </section>
     <!-- /.content -->
   </div>
@@ -314,8 +311,10 @@ include '../crud/koneksi.php';
     All rights reserved.
     <!-- <div class="float-right d-none d-sm-inline-block">
       <b>Version</b> 3.2.0
-    </div>-->
+    </div> -->
   </footer>
+
+
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
