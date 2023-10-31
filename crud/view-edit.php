@@ -45,6 +45,41 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
+      <li class="nav-item mt-2 mr-1">
+        <?php
+        $hari = [
+          "Minggu", "Senin", "Selasa", "Rabu",
+          "Kamis", "Jumat", "Sabtu", "Minggu",
+        ];
+        // echo date('N'); //get index hari
+        $index_hari = date('N');
+
+        echo $hari[$index_hari].", ";
+        ?>
+      </li>
+      <li class="nav-item mt-2">
+        <?php 
+          function tgl_indo($tanggal){
+            $bulan = array (
+              1 => 'Januari', 'Februari', 'Maret', 'April',
+              'Mei', 'Juni', 'Juli', 'Agustus',
+              'September', 'Oktober', 'November', 'Desember'
+            );
+
+            $indo = explode('-', $tanggal);
+
+            //variabel indo 0 = tanggal
+            //variabel indo 1 = bulan
+            //variabel indo 2 = tahun
+            
+
+            return $indo[2] . ' ' . $bulan[ (int)$indo[1] ]. ' ' . $indo[0];
+          }
+
+          echo tgl_indo(date('Y-m-d'));
+        ?>
+      </li>
+      <li class="nav-item mt-2 ml-2" id="time"><script src="../assets/js/time.js"></script></li>
     </ul>
 
     <!-- Right navbar links -->
@@ -261,10 +296,14 @@
                             <input type="text" class="form-control" value="<?php echo $data['stock']; ?>" name="stock" required>
                         </div>
                         <div class="form-group">
-                            <label>Upload Gambar Produk</label><br><br>
-                            <img src="img/<?php echo $data['image']; ?>" width="100" height="100"><br><br>
-                            <input type="file" class="form-control" name="image" accept=".jpg, .jpeg, .png, .gif">
-                            <input type="hidden" name="imagelama" value="<?php echo $data['image']; ?>">
+                            <label>Upload Gambar Produk</label>
+                            <input type="file" class="form-control" name="image[]" accept=".jpg, .jpeg, .png, .gif" multiple><br><br>
+                            <?php
+                            foreach(json_decode($data['image']) as $i) :
+                            ?>
+                            <img src="../crud/img/<?php echo $i; ?>" width="100">
+                            <input type="hidden" name="imagelama" value="<?php echo $i; ?>">
+                            <?php endforeach; ?>
                         </div>
                         <div class="row">
                           <div class="col text-center">

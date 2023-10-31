@@ -1,3 +1,31 @@
+<?php
+include 'crud/koneksi.php';
+session_start();
+
+if (isset($_SESSION['login_user'])) {
+    header("location: pages/dashboard.php");
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    
+    $myUsername = mysqli_real_escape_string($koneksi, $_POST['username']);
+    $myPassword = mysqli_real_escape_string($koneksi, $_POST['password']);
+
+    $sql = "SELECT * FROM users WHERE phone_number = '$myUsername' and password = '$myPassword'";
+    $result = mysqli_query($koneksi, $sql);
+    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    $count = mysqli_num_rows($result);
+
+    if ($count == 1) {
+        $_SESSION['login_user'] = $row['name'];
+        header("location: pages/dashboard.php");
+    } else {
+        $error = "Username dan Password Tidak Sesuai";
+    }
+}
+
+?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +52,7 @@
                                     </div>
 
                                     <br>
-                                    <form action="pages/cek-login.php" method="post">
+                                    <form action="" method="post">
                                         <div class="card-body">
                                             <div class="input-group mb-3">
                                                 <div class="input-group-prepend">
@@ -42,10 +70,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-6">
-                                                    <div class="form-check">
-                                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                                        <label class="form-check-label" for="exampleCheck1">Ingat Saya</label>
-                                                    </div>
+                                                    <p><a href="./pages/register.php">Registrasi</a></p>
                                                 </div>
                                                 <div class="col-6">
                                                     <p><a href="#">Lupa Password ?</a></p>
@@ -57,7 +82,7 @@
                                             </div>
                                         </div>
                                     </form>
-                                    <div class="social-auth-links text-center mb-3">
+                                    <div class="social-auth-links text-center">
                                         <p>- Masuk Dengan Akun Lain-</p>
                                         <a href="#" class="btn btn-block btn-primary">
                                             <i class="fab fa-facebook mr-2"></i> Facebook

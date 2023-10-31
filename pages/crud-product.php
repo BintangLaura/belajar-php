@@ -46,6 +46,41 @@ $query = mysqli_query($koneksi, "SELECT * FROM products_view");
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
+      <li class="nav-item mt-2">
+        <?php
+        $hari = [
+          "Minggu", "Senin", "Selasa", "Rabu",
+          "Kamis", "Jumat", "Sabtu", "Minggu",
+        ];
+        // echo date('N'); //get index hari
+        $index_hari = date('N');
+
+        echo $hari[$index_hari].", ";
+        ?>
+      </li>
+      <li class="nav-item mt-2 mr-1">
+        <?php 
+          function tgl_indo($tanggal){
+            $bulan = array (
+              1 => 'Januari', 'Februari', 'Maret', 'April',
+              'Mei', 'Juni', 'Juli', 'Agustus',
+              'September', 'Oktober', 'November', 'Desember'
+            );
+
+            $indo = explode('-', $tanggal);
+
+            //variabel indo 0 = tanggal
+            //variabel indo 1 = bulan
+            //variabel indo 2 = tahun
+            
+
+            return $indo[2] . ' ' . $bulan[ (int)$indo[1] ]. ' ' . $indo[0];
+          }
+
+          echo tgl_indo(date('Y-m-d'));
+        ?>
+      </li>
+      <li class="nav-item mt-2 ml-2" id="time"><script src="../assets/js/time.js"></script></li>
     </ul>
 
     <!-- Right navbar links -->
@@ -225,72 +260,80 @@ $query = mysqli_query($koneksi, "SELECT * FROM products_view");
         <i class="nav-icon fas fa-plus"></i> Tambah Data Produk
       </a>
       <div class="container-fluid">
-      <div class="card">
+        <div class="card">
+          <div class="card-body">
+            <table class="table table-bordered table-hover">
+                      <thead>
+                        <tr class="text-center">
+                          <th style="width: 10px">No</th>
+                          <th>Kode Produk</th>
+                          <th>Kategori Produk</th>
+                          <th>Nama Kategori Produk</th>
+                          <th>Nama Produk</th>
+                          <th>Deskripsi Produk</th>
+                          <th>Harga Produk</th>
+                          <th>Diskon Produk</th>
+                          <th>Stok Produk</th>
+                          <th>Gambar Produk</th>
+                          <th>Aksi</th>
+                        </tr>
+                      </thead>
+                      <?php
+    
+                      //konfigurasi pagination
+                      $dataperhalaman = 3;
+                      $halaman = isset($_GET['p'])?(int)$_GET['p'] : 1;
+                      $halaman_awal = ($halaman > 1) ? ($halaman * $dataperhalaman) - $dataperhalaman : 0;
+    
+                      $next = $halaman + 1;
+                      $previous = $halaman - 1;
+    
+                      $produk = mysqli_query($koneksi, "SELECT * FROM products_view");
+                      $jumlah_data = mysqli_num_rows($produk);
+                      $total_halaman = ceil($jumlah_data / $dataperhalaman);                 
+    
+    
+                        if (isset($_GET['cari'])) {
+                          $query = mysqli_query($koneksi, "SELECT * FROM products_view WHERE product_name LIKE '%".$cari."%' 
+                                  OR category_name LIKE '%".$cari."%' OR description LIKE '%".$cari."%'");
+                        } else {
+                          $query = mysqli_query($koneksi, "SELECT * FROM products_view 
+                          LIMIT $halaman_awal, $dataperhalaman");
+                        }
+                        $nomor = 0;
+                        while ($data = mysqli_fetch_array($query)) {
+                          $nomor++;
+                      ?>
+                      <tbody>
+                        <tr>
+                          <td><?php echo $nomor ?></td>
+                          <td><?php echo $data['product_code']; ?></td>
+                          <td><?php echo $data['category_id']; ?></td>
+                          <td><?php echo $data['category_name']; ?></td>
+                          <td><?php echo $data['product_name']; ?></td>
+                          <td><?php echo $data['description']; ?></td>
+                          <td><?php echo $data['price']; ?></td>
+                          <td><?php echo $data['discount_amount']; ?></td>
+                          <td><?php echo $data['stock']; ?></td>
+                          <td class="text-center">
+                          <?php
+                          // $image = explode(" ",$data['image']);
+    
+                          foreach(json_decode($data['image']) as $i) :
+                          ?>
+                            <img src="../crud/img/<?php echo $i; ?>" width="100">
+                            <?php endforeach; ?>
+                          </td>
+                          <td class="text-center">
+                              <a href="../crud/view-edit.php?product_code=<?php echo $data['product_code']; ?>" class="btn btn-outline-warning btn-sm ms-3 mb-3"><i class="nav-icon fas fa-edit"></i></a>
+                              <a href="../crud/hapus.php?product_code=<?php echo $data['product_code']; ?>" class="btn btn-outline-danger btn-sm ms-3"><i class="nav-icon fas fa-trash"></i></a>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <?php } ?>
+                    </table>
+          </div>
               <!-- /.card-header -->
-              <div class="card-body">
-                <table class="table table-bordered">
-                  <thead>
-                    <tr class="text-center">
-                      <th style="width: 10px">No</th>
-                      <th>Kode Produk</th>
-                      <th>Kategori Produk</th>
-                      <th>Nama Kategori Produk</th>
-                      <th>Nama Produk</th>
-                      <th>Deskripsi Produk</th>
-                      <th>Harga Produk</th>
-                      <th>Diskon Produk</th>
-                      <th>Stok Produk</th>
-                      <th>Gambar Produk</th>
-                      <th>Aksi</th>
-                    </tr>
-                  </thead>
-                  <?php
-
-                  //konfigurasi pagination
-                  $dataperhalaman = 3;
-                  $halaman = isset($_GET['p'])?(int)$_GET['p'] : 1;
-                  $halaman_awal = ($halaman > 1) ? ($halaman * $dataperhalaman) - $dataperhalaman : 0;
-
-                  $next = $halaman + 1;
-                  $previous = $halaman - 1;
-
-                  $produk = mysqli_query($koneksi, "SELECT * FROM products_view");
-                  $jumlah_data = mysqli_num_rows($produk);
-                  $total_halaman = ceil($jumlah_data / $dataperhalaman);                 
-
-
-                    if (isset($_GET['cari'])) {
-                      $query = mysqli_query($koneksi, "SELECT * FROM products_view WHERE product_name LIKE '%".$cari."%' 
-                              OR category_name LIKE '%".$cari."%' OR description LIKE '%".$cari."%'");
-                    } else {
-                      $query = mysqli_query($koneksi, "SELECT * FROM products_view 
-                      LIMIT $halaman_awal, $dataperhalaman");
-                    }
-                    $nomor = 0;
-                    while ($data = mysqli_fetch_array($query)) {
-                      $nomor++;
-                  ?>
-                  <tbody>
-                    <tr>
-                      <td><?php echo $nomor ?></td>
-                      <td><?php echo $data['product_code']; ?></td>
-                      <td><?php echo $data['category_id']; ?></td>
-                      <td><?php echo $data['category_name']; ?></td>
-                      <td><?php echo $data['product_name']; ?></td>
-                      <td><?php echo $data['description']; ?></td>
-                      <td><?php echo $data['price']; ?></td>
-                      <td><?php echo $data['discount_amount']; ?></td>
-                      <td><?php echo $data['stock']; ?></td>
-                      <td class="text-center"><img src="../crud/img/<?php echo $data['image']; ?>" width="100"></td>
-                      <td class="text-center">
-                          <a href="../crud/view-edit.php?product_code=<?php echo $data['product_code']; ?>" class="btn btn-outline-warning btn-sm ms-3 mb-3"><i class="nav-icon fas fa-edit"></i></a>
-                          <a href="../crud/hapus.php?product_code=<?php echo $data['product_code']; ?>" class="btn btn-outline-danger btn-sm ms-3"><i class="nav-icon fas fa-trash"></i></a>
-                      </td>
-                    </tr>
-                  </tbody>
-                  <?php } ?>
-                </table>
-              </div>
               <!-- /.card-body -->
               <div class="card-footer clearfix">
                 <ul class="pagination pagination-sm m-0 float-right">

@@ -13,18 +13,31 @@ if (isset($_POST['simpan'])) {
 
     $imagelama = $_POST['imagelama'];
 
-    $image = $_FILES['image']['name'];
-    $file = $_FILES['image']['tmp_name'];
+    $totalFiles = count($_FILES['image']['name']);
+    $fileArray = array();
+
+    for ($i=0; $i < $totalFiles; $i++) { 
+        $imageName = $_FILES['image']['name'][$i];
+        $file_tmp = $_FILES['image']['tmp_name'][$i];
+
+        $imageExtension = explode('.', $imageName);
+        $imageExtension = strtolower(end($imageExtension));
+
+        $newImageName = uniqid() . '.' . $imageExtension;
+
+        move_uploaded_file($file_tmp, 'img/' . $newImageName);
+        $fileArray[] = $newImageName;
+    }
+
+    $fileArray = json_encode($fileArray);
 
     //cek foto baru
-    if ($image) {
+    if ($totalFiles) {
         //ada gambar baru
         //hapus foto lama
         unlink('img/'.$imagelama);
-
         //simpan foto dan update data
-        $sql = mysqli_query($koneksi, "UPDATE products SET category_id='$category_id', description='$description', product_name='$product_name', price='$price', discount_amount='$discount_amount', stock='$stock', image='$image' WHERE product_code='$product_code' ");
-        move_uploaded_file($file, "img/".$image);
+        $sql = mysqli_query($koneksi, "UPDATE products SET category_id='$category_id', description='$description', product_name='$product_name', price='$price', discount_amount='$discount_amount', stock='$stock', image='$fileArray' WHERE product_code='$product_code' ");
     } else {
         $sql = mysqli_query($koneksi, "UPDATE products SET category_id='$category_id', description='$description', product_name='$product_name', price='$price', discount_amount='$discount_amount', stock='$stock' WHERE product_code='$product_code' ");
     }
